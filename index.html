@@ -2,35 +2,150 @@
 <html>
 <head>
     <title>Protocol Portal | Phase 2</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;500;700&display=swap" rel="stylesheet">
     <style>
-        :root { --primary: #0052ff; --danger: #ff4d4d; --success: #00fb5a; --bg: #050505; }
-        body { background-color: var(--bg); color: #fff; font-family: 'Inter', sans-serif; text-align: center; margin: 0; padding: 20px; }
-        .container { max-width: 650px; margin: 40px auto; }
-        h1 { font-weight: 700; color: var(--primary); letter-spacing: -1px; }
-        .warning-box { background: rgba(255, 171, 0, 0.1); border: 1px solid #ffab00; padding: 25px; border-radius: 12px; margin-bottom: 30px; text-align: left; font-size: 0.95rem; }
-        video, .image-container { width: 100%; max-width: 600px; border-radius: 16px; border: 1px solid rgba(255,255,255,0.1); background: #111; }
-        .image-container { position: relative; height: 350px; overflow: hidden; display: flex; align-items: center; justify-content: center; }
-        .image-container img { width: 100%; height: 100%; object-fit: cover; opacity: 0.3; filter: grayscale(100%); }
-        .question-overlay { position: absolute; padding: 30px; font-size: 1.25rem; font-weight: 400; color: var(--success); text-shadow: 0 2px 12px rgba(0,0,0,0.9); }
-        #userFeed { position: fixed; bottom: 20px; right: 20px; width: 120px; height: 160px; border-radius: 12px; border: 2px solid var(--primary); background: #000; object-fit: cover; z-index: 100; transform: scaleX(-1); display: none; }
-        #timer { font-size: 36px; font-weight: 700; color: var(--danger); margin-bottom: 20px; }
-        textarea { width: 100%; max-width: 580px; padding: 18px; border-radius: 8px; margin-bottom: 20px; background: #0a0a0a; color: #fff; border: 1px solid #333; font-family: inherit; font-size: 1rem; }
-        button { background: var(--primary); color: #fff; padding: 18px 45px; border: none; border-radius: 8px; cursor: pointer; font-weight: 700; }
+        :root { 
+            --primary: #002DFF; 
+            --danger: #D00000; 
+            --text: #1A1A1A; 
+            --bg: #F8F9FA; 
+            --card: #FFFFFF;
+        }
+        
+        body { 
+            background-color: var(--bg); 
+            color: var(--text); 
+            font-family: 'Space Grotesk', sans-serif; 
+            text-align: center; 
+            margin: 0; 
+            padding: 20px;
+            letter-spacing: -0.02em;
+        }
+
+        .container { 
+            max-width: 700px; 
+            margin: 60px auto; 
+            background: var(--card);
+            padding: 50px;
+            border-radius: 2px;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.05);
+            border: 1px solid #EEE;
+        }
+
+        h1 { 
+            font-weight: 700; 
+            font-size: 2.2rem;
+            margin-bottom: 10px;
+            color: var(--text);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .warning-box { 
+            background: #F1F3FF; 
+            border-left: 4px solid var(--primary); 
+            padding: 25px; 
+            margin-bottom: 40px; 
+            text-align: left; 
+            font-size: 0.9rem;
+            line-height: 1.8;
+            color: #444;
+        }
+
+        video, .image-container { 
+            width: 100%; 
+            border: 1px solid #DDD; 
+            background: #000; 
+        }
+
+        .image-container { 
+            position: relative; 
+            height: 400px; 
+            overflow: hidden; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+        }
+
+        .image-container img { 
+            width: 100%; 
+            height: 100%; 
+            object-fit: cover; 
+            opacity: 0.2; 
+        }
+
+        .question-overlay { 
+            position: absolute; 
+            padding: 40px; 
+            font-size: 1.3rem; 
+            font-weight: 500; 
+            color: var(--text); 
+            line-height: 1.5;
+        }
+
+        #userFeed { 
+            position: fixed; 
+            bottom: 30px; 
+            right: 30px; 
+            width: 140px; 
+            height: 190px; 
+            border: 1px solid #DDD; 
+            background: #FFF; 
+            object-fit: cover; 
+            z-index: 100; 
+            transform: scaleX(-1); 
+            display: none;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+
+        #timer { 
+            font-size: 38px; 
+            font-weight: 300; 
+            color: var(--danger); 
+            margin-bottom: 25px; 
+            height: 45px; /* Keeps layout stable even when hidden */
+        }
+
+        input, textarea { 
+            width: 100%; 
+            box-sizing: border-box;
+            padding: 20px; 
+            margin-bottom: 25px; 
+            background: #FFF; 
+            color: var(--text); 
+            border: 1px solid #CCC; 
+            font-family: inherit; 
+            font-size: 1.1rem; 
+        }
+
+        button { 
+            background: var(--primary); 
+            color: #fff; 
+            padding: 18px 50px; 
+            border: none; 
+            cursor: pointer; 
+            font-weight: 700; 
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
     </style>
 </head>
 <body>
     <video id="userFeed" autoplay playsinline muted></video>
 
     <div class="container" id="box">
-        <h1>Phase 2: Protocol Entry</h1>
+        <h1>Archive Access</h1>
+        <p style="color: #888; margin-bottom: 30px;">Phase 2 Authentication Portal</p>
+        
         <div class="warning-box">
-            <strong>Security Protocol</strong>
-            - 60 seconds for technical responses.<br>
-            - Camera feed must remain active.<br>
-            - <strong>Single-Entry:</strong> This application email can only be initialized once.
+            <strong>Security Directives</strong>
+            - 60s for technical queries.<br>
+            - Live biometric feed required.<br>
+            - <strong>Integrity Check:</strong> Tab switching terminates the session.<br>
+            - <strong>Single Use:</strong> Identity/Email is locked upon initialization.
         </div>
-        <input type="email" id="userEmail" style="width:100%; max-width:580px; padding:18px; margin-bottom:20px; background:#0a0a0a; border:1px solid #333; color:white;" placeholder="Enter Application Email">
+        
+        <input type="email" id="userEmail" placeholder="Enter Application Email">
         <br>
         <button onclick="start()">Initialize Protocol</button>
     </div>
@@ -41,19 +156,28 @@
         
         const questions = [
             "", 
-            "To begin, please state your full name and nationality. We'd love to get to know you better—what experiences have you had in the Web3 space, and why do you feel you’re the right fit for this role?",
-            "", // Video 1 placeholder
-            "", // Video 2 placeholder
-            "A user comes to you crying because they lost their seed phrase and they want you to 'reset' their account. How do you explain the reality of self-custody to them without being a jerk?",
-            "When you see a new token launch on Base, what is the #1 technical 'red flag' you check for on-chain to make sure it isn't a Honey Pot or a scam?",
-            "We are building a high-signal inner circle. What is the one unique skill or perspective you bring that we can't find in anyone else?",
-            "Explain the difference between 'Mainnet' and 'Testnet'. Why is it dangerous to skip testing on Base Sepolia before going live?",
-            "If protocol TVL drops 50% in one hour but the code is secure, what is your message to the community?",
-            "What is 'Slippage'? If a user sets it to 20% on a high-liquidity pair, are they protecting or hurting themselves?",
-            "Explain the risk of Social Engineering in crypto. Give one example of how a scammer might try to trick a Phase 2 member.",
-            "This protocol requires 100% conviction. If accepted, what is your primary contribution to the ecosystem over the next 12 months?",
-            "Final Step: Regarding our operations, please state your expected bi-weekly compensation in USDT and confirm if you are capable of aligning your workflow with the US Time Zone (EST/PST)."
+            "State your full name and nationality. Detail your Web3 experience and explain why you are qualified for this specific role.",
+            "", // Video 1 
+            "", // Video 2
+            "A user loses their seed phrase and requests an account reset. How do you explain the reality of self-custody with professional empathy?",
+            "What is the primary on-chain 'Red Flag' you check for to identify a Honey Pot on Base?",
+            "What unique skill or perspective do you bring that serves as an unreplaceable moat for this protocol?",
+            "Explain the distinction between Mainnet and Testnet (Base Sepolia). Why is skipping the latter a critical failure?",
+            "If protocol TVL drops 50% while the code remains secure, what is your message to the community?",
+            "Define 'Slippage'. How does a 20% setting on a high-liquidity pair invite MEV attacks?",
+            "Describe the mechanics of Social Engineering in crypto and provide one common example involving 'fake support'.",
+            "This role requires absolute conviction. What is your primary ecosystem contribution over the next 12 months?",
+            "Final Step: State your bi-weekly compensation expectations in USDT and confirm US Time Zone alignment."
         ];
+
+        window.onblur = () => { 
+            if(step > 0 && step <= 12) {
+                clearInterval(clock);
+                localStorage.setItem('done_' + data.email, 'true');
+                document.getElementById('box').innerHTML = "<h1 style='color:var(--danger)'>INTEGRITY BREACH</h1><p>Session terminated due to window focus loss.</p>";
+                if(window.stream) window.stream.getTracks().forEach(t => t.stop());
+            }
+        }; 
 
         async function start() { 
             data.email = document.getElementById('userEmail').value.toLowerCase().trim();
@@ -66,15 +190,14 @@
                 document.getElementById('userFeed').srcObject = stream;
                 document.getElementById('userFeed').style.display = "block";
                 step = 1; render(); 
-                // No timer start here for Step 1
-            } catch (e) { alert("Camera access required."); }
+            } catch (e) { alert("Biometric access required."); }
         }
 
         function tick() { 
-            // Timer only ticks if it's NOT step 1 and NOT step 12
             if (step > 1 && step < 12) {
                 time--; 
-                document.getElementById('timer').innerText = time + "s"; 
+                let tElem = document.getElementById('timer');
+                if(tElem) tElem.innerText = time + "s"; 
                 if(time <= 0) next(); 
             }
         }
@@ -86,8 +209,6 @@
                 step++; 
                 time = 60; 
                 render(); 
-                
-                // Clear and restart clock only for technical steps
                 clearInterval(clock);
                 if (step > 1 && step < 12) {
                     clock = setInterval(tick, 1000);
@@ -95,30 +216,31 @@
             } 
             else { 
                 clearInterval(clock);
-                document.getElementById('box').innerHTML = "<h1>Submission in progress...</h1>";
+                document.getElementById('box').innerHTML = "<h1>Archiving...</h1>";
                 await fetch(FORMSPREE_URL, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(data) });
                 localStorage.setItem('done_' + data.email, 'true'); 
                 if(window.stream) window.stream.getTracks().forEach(t => t.stop());
-                document.getElementById('box').innerHTML = "<h1 style='color:var(--success)'>Entry Successful</h1><p>Transmission complete.</p>"; 
+                document.getElementById('box').innerHTML = "<h1 style='color:var(--success)'>Transmission Complete</h1><p>Your application is now under review.</p>"; 
             }
         }
 
         function render() {
             let media;
-            let timerDisplay = (step === 1 || step === 12) ? "Flexible Time" : time + "s";
+            // Hide timer for steps 1 and 12
+            let timerHtml = (step === 1 || step === 12) ? '<div id="timer" style="visibility:hidden"></div>' : `<div id="timer">${time}s</div>`;
 
             if (step === 1 || step >= 4) {
                 media = `<div class="image-container"><img src="avatar.jpg.jpeg"><div class="question-overlay">${questions[step]}</div></div>`;
             } else {
                 let vNum = step - 1; 
-                media = `<video autoplay playsinline muted src="video${vNum}.MP4" onloadedmetadata="this.muted=false; this.play();" style="width:100%; border-radius:16px;"></video>`;
+                media = `<video autoplay playsinline muted src="video${vNum}.MP4" onloadedmetadata="this.muted=false; this.play();"></video>`;
             }
 
             document.getElementById('box').innerHTML = `
-                <div id="timer">${timerDisplay}</div>
-                ${media}<br>
+                ${timerHtml}
+                ${media}<br><br>
                 <textarea id="ans" placeholder="Provide your answers" autofocus></textarea><br>
-                <button onclick="next()">Submit Response</button>
+                <button onclick="next()">Proceed</button>
             `;
         }
     </script>
