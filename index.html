@@ -1,32 +1,49 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Secure Interview</title>
+    <title>Protocol Portal</title>
     <style>
         body { background: #000; color: #fff; font-family: sans-serif; text-align: center; padding: 50px; }
-        video { width: 100%; max-width: 600px; border-radius: 10px; border: 2px solid #0052ff; }
-        textarea { width: 100%; max-width: 600px; height: 100px; margin-top: 20px; padding: 10px; border-radius: 5px; }
-        #timer { font-size: 30px; color: red; font-weight: bold; margin-bottom: 10px; }
+        video { width: 100%; max-width: 600px; border-radius: 10px; border: 2px solid #0052ff; background: #111; }
+        input, textarea { width: 100%; max-width: 580px; padding: 12px; border-radius: 5px; margin-bottom: 15px; background: #111; color: #fff; border: 1px solid #444; }
+        #timer { font-size: 30px; color: #ff4d4d; font-weight: bold; margin-bottom: 10px; }
         button { background: #0052ff; color: #fff; padding: 15px 30px; border: none; border-radius: 5px; cursor: pointer; font-weight: bold; }
     </style>
 </head>
 <body>
     <div id="box">
-        <h1 style="color: #0052ff;">Phase 2: Secure Interview</h1>
-        <p>You have 20 seconds per question. Switching tabs resets the interview.</p>
-        <button onclick="start()">Begin Interview</button>
+        <h1 style="color: #0052ff;">Phase 2: Protocol Entry</h1>
+        <p>Enter your email. Tab switching or minimizing will VOID your application.</p>
+        <input type="email" id="userEmail" placeholder="Your Application Email" required><br>
+        <button onclick="start()">Begin Secure Interview</button>
     </div>
 
     <script>
-        let step = 1; let time = 20; let clock;
+        // --- CONFIGURATION ---
+        const FORMSPREE_URL = "https://formspree.io/f/xojnqbba"; 
+        // ---------------------
+
+        let step = 0; let time = 60; let clock; 
+        let data = { email: "", ans1: "", ans2: "" };
         
-        if(localStorage.getItem('interview_done')) {
-            document.body.innerHTML = "<h1>Error: Interview Already Completed.</h1>";
+        if(localStorage.getItem('gate_status') === 'blocked') {
+            document.body.innerHTML = "<h1 style='color:red'>ACCESS DENIED: Security Breach Detected.</h1>";
         }
 
-        window.onblur = () => { if(step < 3) location.reload(); }; 
+        window.onblur = () => { 
+            if(step > 0 && step < 3) {
+                localStorage.setItem('gate_status', 'blocked');
+                location.reload();
+            }
+        }; 
 
-        function start() { render(); clock = setInterval(tick, 1000); }
+        function start() { 
+            data.email = document.getElementById('userEmail').value;
+            if(!data.email.includes('@')) { alert("Valid email required"); return; }
+            step = 1;
+            render(); 
+            clock = setInterval(tick, 1000); 
+        }
 
         function tick() { 
             time--; 
@@ -34,25 +51,37 @@
             if(time <= 0) next(); 
         }
 
-        function next() { 
-            if(step === 1) { step = 2; time = 20; render(); } 
-            else { 
-                clearInterval(clock); 
-                localStorage.setItem('interview_done', 'true'); 
-                document.getElementById('box').innerHTML = "<h1 style='color:#00fb5a'>Interview Submitted Successfully</h1>"; 
+        async function next() { 
+            const currentAns = document.getElementById('ans').value;
+            if(step === 1) { 
+                data.ans1 = currentAns;
+                step = 2; time = 60; render(); 
+            } else { 
+                data.ans2 = currentAns;
+                clearInterval(clock);
+                document.getElementById('box').innerHTML = "<h1>Submitting Securely...</h1>";
+                
+                // Sending to Formspree
+                await fetch(FORMSPREE_URL, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(data)
+                });
+
+                localStorage.setItem('gate_status', 'blocked'); 
+                document.getElementById('box').innerHTML = "<h1 style='color:#00fb5a'>Interview Submitted Successfully.</h1>"; 
             }
         }
 
         function render() {
-            // Updated to .MP4 to match your GitHub upload exactly
-            let videoFile = step === 1 ? "video1.MP4" : "video2.MP4";
+            let vid = step === 1 ? "video1.MP4" : "video2.MP4";
             document.getElementById('box').innerHTML = `
-                <div id="timer">Time Remaining: 20s</div>
-                <video autoplay src="${videoFile}"></video>
+                <div id="timer">Time Remaining: 60s</div>
+                <video autoplay playsinline muted src="${vid}" onloadedmetadata="this.muted=false; this.play();"></video>
                 <br>
-                <textarea placeholder="Type your answer here..."></textarea>
+                <textarea id="ans" placeholder="Type your answer here..."></textarea>
                 <br>
-                <button onclick="next()">Submit Answer</button>
+                <button onclick="next()">Submit Response</button>
             `;
         }
     </script>
