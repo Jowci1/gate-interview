@@ -10,6 +10,7 @@
             --text: #1A1A1A; 
             --bg: #F8F9FA; 
             --card: #FFFFFF;
+            --overlay-text: #FFFFFF; /* Forced White for Questions */
         }
         
         body { 
@@ -55,7 +56,7 @@
         video, .image-container { 
             width: 100%; 
             border: 1px solid #DDD; 
-            background: #000; 
+            background: #000; /* Black background keeps videos clean */
         }
 
         .image-container { 
@@ -64,23 +65,27 @@
             overflow: hidden; 
             display: flex; 
             align-items: center; 
-            justify-content: center; 
+            justify-content: center;
+            background-color: #000; /* Dark base for white text contrast */
         }
 
         .image-container img { 
             width: 100%; 
             height: 100%; 
             object-fit: cover; 
-            opacity: 0.2; 
+            opacity: 0.4; /* Slightly darker to make white text pop */
         }
 
         .question-overlay { 
             position: absolute; 
             padding: 40px; 
-            font-size: 1.3rem; 
-            font-weight: 500; 
-            color: var(--text); 
-            line-height: 1.5;
+            font-size: 1.5rem; 
+            font-weight: 700; 
+            color: var(--overlay-text); 
+            line-height: 1.4;
+            /* Heavy shadow to ensure readability on any image */
+            text-shadow: 0px 4px 15px rgba(0, 0, 0, 0.9), 0px 0px 30px rgba(0, 0, 0, 0.5);
+            z-index: 2;
         }
 
         #userFeed { 
@@ -103,7 +108,7 @@
             font-weight: 300; 
             color: var(--danger); 
             margin-bottom: 25px; 
-            height: 45px; /* Keeps layout stable even when hidden */
+            height: 45px;
         }
 
         input, textarea { 
@@ -127,6 +132,11 @@
             font-weight: 700; 
             text-transform: uppercase;
             letter-spacing: 1px;
+            transition: 0.2s ease;
+        }
+
+        button:hover {
+            opacity: 0.9;
         }
     </style>
 </head>
@@ -226,7 +236,6 @@
 
         function render() {
             let media;
-            // Hide timer for steps 1 and 12
             let timerHtml = (step === 1 || step === 12) ? '<div id="timer" style="visibility:hidden"></div>' : `<div id="timer">${time}s</div>`;
 
             if (step === 1 || step >= 4) {
