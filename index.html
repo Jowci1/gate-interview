@@ -5,25 +5,21 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;700&display=swap" rel="stylesheet">
     <style>
         :root { --primary: #0052ff; --danger: #ff4d4d; --success: #00fb5a; --bg: #050505; }
-        body { background-color: var(--bg); color: #fff; font-family: 'Inter', sans-serif; text-align: center; margin: 0; padding: 20px; line-height: 1.6; }
-        .container { max-width: 650px; margin: 40px auto; padding: 20px; }
+        body { background-color: var(--bg); color: #fff; font-family: 'Inter', sans-serif; text-align: center; margin: 0; padding: 20px; }
+        .container { max-width: 650px; margin: 40px auto; }
         
-        h1 { font-weight: 700; letter-spacing: -1px; color: var(--primary); margin-bottom: 10px; }
-        .warning-box { background: rgba(255, 171, 0, 0.1); border: 1px solid #ffab00; padding: 20px; border-radius: 12px; margin-bottom: 30px; text-align: left; }
-        .warning-box strong { color: #ffab00; display: block; margin-bottom: 5px; text-transform: uppercase; font-size: 0.8rem; letter-spacing: 1px; }
+        h1 { font-weight: 700; color: var(--primary); letter-spacing: -1px; }
+        .warning-box { background: rgba(255, 171, 0, 0.1); border: 1px solid #ffab00; padding: 20px; border-radius: 12px; margin-bottom: 30px; text-align: left; font-size: 0.95rem; }
+        .warning-box strong { color: #ffab00; display: block; margin-bottom: 5px; text-transform: uppercase; font-size: 0.75rem; letter-spacing: 1px; }
         
-        video, .image-container { width: 100%; max-width: 600px; border-radius: 16px; border: 1px solid rgba(255,255,255,0.1); background: #111; box-shadow: 0 20px 40px rgba(0,0,0,0.5); }
+        video, .image-container { width: 100%; max-width: 600px; border-radius: 16px; border: 1px solid rgba(255,255,255,0.1); background: #111; }
         .image-container { position: relative; height: 350px; overflow: hidden; display: flex; align-items: center; justify-content: center; }
         .image-container img { width: 100%; height: 100%; object-fit: cover; opacity: 0.3; filter: grayscale(100%); }
-        .question-overlay { position: absolute; padding: 30px; font-size: 1.25rem; font-weight: 400; color: var(--success); text-shadow: 0 2px 10px rgba(0,0,0,0.8); }
+        .question-overlay { position: absolute; padding: 30px; font-size: 1.2rem; font-weight: 400; color: var(--success); text-shadow: 0 2px 10px rgba(0,0,0,0.8); }
         
-        #timer { font-size: 32px; font-weight: 700; color: var(--danger); margin-bottom: 20px; font-variant-numeric: tabular-nums; }
-        
-        input, textarea { width: 100%; max-width: 580px; padding: 16px; border-radius: 8px; margin-bottom: 20px; background: #111; color: #fff; border: 1px solid #333; font-family: inherit; font-size: 1rem; transition: border 0.3s; }
-        input:focus, textarea:focus { outline: none; border-color: var(--primary); }
-        
-        button { background: var(--primary); color: #fff; padding: 16px 40px; border: none; border-radius: 8px; cursor: pointer; font-weight: 700; font-size: 1rem; transition: transform 0.2s, opacity 0.2s; }
-        button:hover { opacity: 0.9; transform: translateY(-2px); }
+        #timer { font-size: 32px; font-weight: 700; color: var(--danger); margin-bottom: 20px; }
+        input, textarea { width: 100%; max-width: 580px; padding: 16px; border-radius: 8px; margin-bottom: 20px; background: #111; color: #fff; border: 1px solid #333; font-family: inherit; font-size: 1rem; }
+        button { background: var(--primary); color: #fff; padding: 16px 40px; border: none; border-radius: 8px; cursor: pointer; font-weight: 700; font-size: 1rem; }
     </style>
 </head>
 <body>
@@ -31,9 +27,9 @@
         <h1>Phase 2: Protocol Entry</h1>
         <div class="warning-box">
             <strong>Security Protocol</strong>
-            1. You have exactly 60 seconds per response.<br>
-            2. This interview is <strong>Single-Entry</strong>. Your email can only be used once.<br>
-            3. <strong>Breach Detection:</strong> Minimizing the window or switching tabs will result in an immediate session termination.
+            - 60 seconds per response.<br>
+            - <strong>Single-Entry Only:</strong> Your email is recorded upon initialization.<br>
+            - <strong>Breach Detection:</strong> Switching tabs or minimizing terminates the session and voids the email.
         </div>
         <input type="email" id="userEmail" placeholder="Enter Application Email" required><br>
         <button onclick="start()">Initialize Interview</button>
@@ -43,58 +39,51 @@
         const FORMSPREE_URL = "https://formspree.io/f/xojnqbba"; 
 
         let step = 0; let time = 60; let clock; 
-        let data = { email: "", ans1: "", ans2: "", ans3: "", ans4: "", ans5: "" };
+        let data = { email: "" };
 
         const questions = [
-            "", 
-            "", // Video 1
-            "", // Video 2
-            "A user comes to you crying because they lost their seed phrase and they want you to 'reset' their account. How do you explain the reality of self-custody to them without being a jerk?", 
-            "When you see a new token launch on Base, what is the #1 technical 'red flag' you check for on-chain to make sure it isn't a Honey Pot or a scam?", 
-            "We are building a high-signal inner circle. What is the one unique skill or perspective you bring that we can't find in anyone else?"
+            "", "", "", // 0, 1, 2 are placeholders/videos
+            "A user comes to you crying because they lost their seed phrase and they want you to 'reset' their account. How do you explain the reality of self-custody to them without being a jerk?",
+            "When you see a new token launch on Base, what is the #1 technical 'red flag' you check for on-chain to make sure it isn't a Honey Pot or a scam?",
+            "We are building a high-signal inner circle. What is the one unique skill or perspective you bring that we can't find in anyone else?",
+            "Explain the difference between 'Mainnet' and 'Testnet'. Why is it dangerous to skip testing on Base Sepolia before going live?",
+            "If protocol TVL drops 50% in one hour but the code is secure, what is your message to the community?",
+            "What is 'Slippage'? If a user sets it to 20% on a high-liquidity pair, are they protecting or hurting themselves?",
+            "This protocol requires 100% conviction. If accepted, what is your primary contribution to the ecosystem over the next 12 months?"
         ];
 
-        // BREACH DETECTION
         window.onblur = () => { 
-            if(step > 0 && step < 6) {
+            if(step > 0 && step <= 10) {
                 clearInterval(clock);
-                localStorage.setItem('done_' + data.email, 'true'); // Burn the email on breach
-                document.getElementById('box').innerHTML = "<h1 style='color:var(--danger)'>BREACH DETECTED</h1><p>Security protocol triggered. This session and email have been voided.</p>";
+                localStorage.setItem('done_' + data.email, 'true');
+                document.getElementById('box').innerHTML = "<h1 style='color:var(--danger)'>BREACH DETECTED</h1><p>Tab switching is prohibited. This email has been voided.</p>";
             }
         }; 
 
         function start() { 
             data.email = document.getElementById('userEmail').value.toLowerCase().trim();
             if(!data.email.includes('@')) { alert("Valid email required"); return; }
-            
             if(localStorage.getItem('done_' + data.email)) {
-                document.getElementById('box').innerHTML = "<h1 style='color:var(--danger)'>ACCESS DENIED</h1><p>This email has already attempted the protocol entry.</p>";
-                return;
+                alert("Access Denied: This email has already attempted entry."); return;
             }
-
             step = 1; render(); clock = setInterval(tick, 1000); 
         }
 
         function tick() { 
-            time--; 
-            document.getElementById('timer').innerText = time + "s"; 
+            time--; document.getElementById('timer').innerText = time + "s"; 
             if(time <= 0) next(); 
         }
 
         async function next() { 
             data['ans' + step] = document.getElementById('ans').value;
-            if(step < 5) { 
+            if(step < 10) { 
                 step++; time = 60; render(); 
             } else { 
                 clearInterval(clock);
-                document.getElementById('box').innerHTML = "<h1>Encrypting & Submitting...</h1>";
-                await fetch(FORMSPREE_URL, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(data)
-                });
+                document.getElementById('box').innerHTML = "<h1>Transmitting Data...</h1>";
+                await fetch(FORMSPREE_URL, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(data) });
                 localStorage.setItem('done_' + data.email, 'true'); 
-                document.getElementById('box').innerHTML = "<h1 style='color:var(--success)'>Entry Successful</h1><p>Your data has been transmitted securely.</p>"; 
+                document.getElementById('box').innerHTML = "<h1 style='color:var(--success)'>Entry Successful</h1><p>Transmission complete.</p>"; 
             }
         }
 
@@ -107,7 +96,7 @@
                 <div id="timer">${time}s</div>
                 ${media}
                 <br>
-                <textarea id="ans" placeholder="Provide your high-signal response..." autofocus></textarea>
+                <textarea id="ans" placeholder="Type response..." autofocus></textarea>
                 <br>
                 <button onclick="next()">Submit Response</button>
             `;
