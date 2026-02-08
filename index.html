@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Secure Interview</title>
+    <style>
+        body { background: #000; color: #fff; font-family: sans-serif; text-align: center; padding: 50px; }
+        video { width: 100%; max-width: 600px; border-radius: 10px; border: 2px solid #0052ff; }
+        textarea { width: 100%; max-width: 600px; height: 100px; margin-top: 20px; padding: 10px; border-radius: 5px; }
+        #timer { font-size: 30px; color: red; font-weight: bold; margin-bottom: 10px; }
+        button { background: #0052ff; color: #fff; padding: 15px 30px; border: none; border-radius: 5px; cursor: pointer; font-weight: bold; }
+    </style>
+</head>
+<body>
+    <div id="box">
+        <h1 style="color: #0052ff;">Phase 2: Secure Interview</h1>
+        <p>You have 20 seconds per question. Switching tabs resets the interview.</p>
+        <button onclick="start()">Begin Interview</button>
+    </div>
+
+    <script>
+        let step = 1; let time = 20; let clock;
+        
+        if(localStorage.getItem('interview_done')) {
+            document.body.innerHTML = "<h1>Error: Interview Already Completed.</h1>";
+        }
+
+        window.onblur = () => { if(step < 3) location.reload(); }; 
+
+        function start() { render(); clock = setInterval(tick, 1000); }
+
+        function tick() { 
+            time--; 
+            document.getElementById('timer').innerText = "Time Remaining: " + time + "s"; 
+            if(time <= 0) next(); 
+        }
+
+        function next() { 
+            if(step === 1) { step = 2; time = 20; render(); } 
+            else { 
+                clearInterval(clock); 
+                localStorage.setItem('interview_done', 'true'); 
+                document.getElementById('box').innerHTML = "<h1 style='color:#00fb5a'>Interview Submitted Successfully</h1>"; 
+            }
+        }
+
+        function render() {
+            // Updated to .MP4 to match your GitHub upload exactly
+            let videoFile = step === 1 ? "video1.MP4" : "video2.MP4";
+            document.getElementById('box').innerHTML = `
+                <div id="timer">Time Remaining: 20s</div>
+                <video autoplay src="${videoFile}"></video>
+                <br>
+                <textarea placeholder="Type your answer here..."></textarea>
+                <br>
+                <button onclick="next()">Submit Answer</button>
+            `;
+        }
+    </script>
+</body>
+</html>
