@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Protocol Portal | Phase 2</title>
+    <title>Base Gate | Phase 2</title>
     <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;500;700&display=swap" rel="stylesheet">
     <style>
         :root { 
@@ -10,151 +10,34 @@
             --text: #1A1A1A; 
             --bg: #F8F9FA; 
             --card: #FFFFFF;
-            --overlay-text: #FFFFFF; /* Forced White for Questions */
+            --overlay-text: #FFFFFF;
         }
         
-        body { 
-            background-color: var(--bg); 
-            color: var(--text); 
-            font-family: 'Space Grotesk', sans-serif; 
-            text-align: center; 
-            margin: 0; 
-            padding: 20px;
-            letter-spacing: -0.02em;
-        }
-
-        .container { 
-            max-width: 700px; 
-            margin: 60px auto; 
-            background: var(--card);
-            padding: 50px;
-            border-radius: 2px;
-            box-shadow: 0 20px 50px rgba(0,0,0,0.05);
-            border: 1px solid #EEE;
-        }
-
-        h1 { 
-            font-weight: 700; 
-            font-size: 2.2rem;
-            margin-bottom: 10px;
-            color: var(--text);
-            text-transform: uppercase;
-            letter-spacing: 2px;
-        }
-
-        .warning-box { 
-            background: #F1F3FF; 
-            border-left: 4px solid var(--primary); 
-            padding: 25px; 
-            margin-bottom: 40px; 
-            text-align: left; 
-            font-size: 0.9rem;
-            line-height: 1.8;
-            color: #444;
-        }
-
-        video, .image-container { 
-            width: 100%; 
-            border: 1px solid #DDD; 
-            background: #000; /* Black background keeps videos clean */
-        }
-
-        .image-container { 
-            position: relative; 
-            height: 400px; 
-            overflow: hidden; 
-            display: flex; 
-            align-items: center; 
-            justify-content: center;
-            background-color: #000; /* Dark base for white text contrast */
-        }
-
-        .image-container img { 
-            width: 100%; 
-            height: 100%; 
-            object-fit: cover; 
-            opacity: 0.4; /* Slightly darker to make white text pop */
-        }
-
-        .question-overlay { 
-            position: absolute; 
-            padding: 40px; 
-            font-size: 1.5rem; 
-            font-weight: 700; 
-            color: var(--overlay-text); 
-            line-height: 1.4;
-            /* Heavy shadow to ensure readability on any image */
-            text-shadow: 0px 4px 15px rgba(0, 0, 0, 0.9), 0px 0px 30px rgba(0, 0, 0, 0.5);
-            z-index: 2;
-        }
-
-        #userFeed { 
-            position: fixed; 
-            bottom: 30px; 
-            right: 30px; 
-            width: 140px; 
-            height: 190px; 
-            border: 1px solid #DDD; 
-            background: #FFF; 
-            object-fit: cover; 
-            z-index: 100; 
-            transform: scaleX(-1); 
-            display: none;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-        }
-
-        #timer { 
-            font-size: 38px; 
-            font-weight: 300; 
-            color: var(--danger); 
-            margin-bottom: 25px; 
-            height: 45px;
-        }
-
-        input, textarea { 
-            width: 100%; 
-            box-sizing: border-box;
-            padding: 20px; 
-            margin-bottom: 25px; 
-            background: #FFF; 
-            color: var(--text); 
-            border: 1px solid #CCC; 
-            font-family: inherit; 
-            font-size: 1.1rem; 
-        }
-
-        button { 
-            background: var(--primary); 
-            color: #fff; 
-            padding: 18px 50px; 
-            border: none; 
-            cursor: pointer; 
-            font-weight: 700; 
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            transition: 0.2s ease;
-        }
-
-        button:hover {
-            opacity: 0.9;
-        }
+        body { background-color: var(--bg); color: var(--text); font-family: 'Space Grotesk', sans-serif; text-align: center; margin: 0; padding: 20px; }
+        .container { max-width: 700px; margin: 60px auto; background: var(--card); padding: 50px; border: 1px solid #EEE; box-shadow: 0 20px 50px rgba(0,0,0,0.05); }
+        h1 { font-weight: 700; font-size: 2.2rem; margin-bottom: 20px; color: var(--text); text-transform: uppercase; }
+        .warning-box { background: #F1F3FF; border-left: 4px solid var(--primary); padding: 25px; margin-bottom: 40px; text-align: left; font-size: 0.9rem; line-height: 1.8; color: #444; }
+        video, .image-container { width: 100%; border: 1px solid #DDD; background: #000; }
+        .image-container { position: relative; height: 400px; overflow: hidden; display: flex; align-items: center; justify-content: center; background-color: #000; }
+        .image-container img { width: 100%; height: 100%; object-fit: cover; opacity: 0.4; }
+        .question-overlay { position: absolute; padding: 40px; font-size: 1.5rem; font-weight: 700; color: var(--overlay-text); line-height: 1.4; text-shadow: 0px 4px 15px rgba(0, 0, 0, 0.9); z-index: 2; }
+        #userFeed { position: fixed; bottom: 30px; right: 30px; width: 140px; height: 190px; border: 1px solid #DDD; background: #FFF; object-fit: cover; z-index: 100; transform: scaleX(-1); display: none; box-shadow: 0 10px 30px rgba(0,0,0,0.1); }
+        #timer { font-size: 38px; font-weight: 300; color: var(--danger); margin-bottom: 25px; height: 45px; }
+        input, textarea { width: 100%; box-sizing: border-box; padding: 20px; margin-bottom: 25px; background: #FFF; color: var(--text); border: 1px solid #CCC; font-family: inherit; font-size: 1.1rem; }
+        button { background: var(--primary); color: #fff; padding: 18px 50px; border: none; cursor: pointer; font-weight: 700; text-transform: uppercase; }
     </style>
 </head>
 <body>
     <video id="userFeed" autoplay playsinline muted></video>
-
     <div class="container" id="box">
-        <h1>Archive Access</h1>
-        <p style="color: #888; margin-bottom: 30px;">Phase 2 Authentication Portal</p>
-        
+        <h1>Base Gate Interview Portal</h1>
         <div class="warning-box">
-            <strong>Security Directives</strong>
-            - 60s for technical queries.<br>
-            - Live biometric feed required.<br>
+            <strong>Security Protocol</strong>
+            - 60 seconds per response.<br>
+            - Camera feed must remain active.<br>
             - <strong>Integrity Check:</strong> Tab switching terminates the session.<br>
-            - <strong>Single Use:</strong> Identity/Email is locked upon initialization.
+            - <strong>Single Use:</strong> This email can only be used once.
         </div>
-        
         <input type="email" id="userEmail" placeholder="Enter Application Email">
         <br>
         <button onclick="start()">Initialize Protocol</button>
@@ -163,12 +46,9 @@
     <script>
         const FORMSPREE_URL = "https://formspree.io/f/xojnqbba"; 
         let step = 0; let time = 60; let clock; let data = { email: "" };
-        
-        const questions = [
-            "", 
+        const questions = ["", 
             "State your full name and nationality. Detail your Web3 experience and explain why you are qualified for this specific role.",
-            "", // Video 1 
-            "", // Video 2
+            "", "", 
             "A user loses their seed phrase and requests an account reset. How do you explain the reality of self-custody with professional empathy?",
             "What is the primary on-chain 'Red Flag' you check for to identify a Honey Pot on Base?",
             "What unique skill or perspective do you bring that serves as an unreplaceable moat for this protocol?",
@@ -184,7 +64,7 @@
             if(step > 0 && step <= 12) {
                 clearInterval(clock);
                 localStorage.setItem('done_' + data.email, 'true');
-                document.getElementById('box').innerHTML = "<h1 style='color:var(--danger)'>INTEGRITY BREACH</h1><p>Session terminated due to window focus loss.</p>";
+                document.getElementById('box').innerHTML = "<h1 style='color:var(--danger)'>INTEGRITY BREACH</h1><p>Session terminated.</p>";
                 if(window.stream) window.stream.getTracks().forEach(t => t.stop());
             }
         }; 
@@ -193,14 +73,13 @@
             data.email = document.getElementById('userEmail').value.toLowerCase().trim();
             if(!data.email.includes('@')) return alert("Valid email required");
             if(localStorage.getItem('done_' + data.email)) return alert("Access Denied.");
-
             try {
                 const stream = await navigator.mediaDevices.getUserMedia({ video: true });
                 window.stream = stream;
                 document.getElementById('userFeed').srcObject = stream;
                 document.getElementById('userFeed').style.display = "block";
                 step = 1; render(); 
-            } catch (e) { alert("Biometric access required."); }
+            } catch (e) { alert("Camera access required."); }
         }
 
         function tick() { 
@@ -214,43 +93,30 @@
 
         async function next() { 
             data['ans' + step] = document.getElementById('ans') ? document.getElementById('ans').value : "";
-            
             if(step < 12) { 
-                step++; 
-                time = 60; 
-                render(); 
+                step++; time = 60; render(); 
                 clearInterval(clock);
-                if (step > 1 && step < 12) {
-                    clock = setInterval(tick, 1000);
-                }
-            } 
-            else { 
+                if (step > 1 && step < 12) clock = setInterval(tick, 1000);
+            } else { 
                 clearInterval(clock);
-                document.getElementById('box').innerHTML = "<h1>Archiving...</h1>";
+                document.getElementById('box').innerHTML = "<h1>Submission in progress...</h1>";
                 await fetch(FORMSPREE_URL, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(data) });
                 localStorage.setItem('done_' + data.email, 'true'); 
                 if(window.stream) window.stream.getTracks().forEach(t => t.stop());
-                document.getElementById('box').innerHTML = "<h1 style='color:var(--success)'>Transmission Complete</h1><p>Your application is now under review.</p>"; 
+                document.getElementById('box').innerHTML = "<h1 style='color:var(--success)'>Entry Successful</h1>"; 
             }
         }
 
         function render() {
             let media;
             let timerHtml = (step === 1 || step === 12) ? '<div id="timer" style="visibility:hidden"></div>' : `<div id="timer">${time}s</div>`;
-
             if (step === 1 || step >= 4) {
                 media = `<div class="image-container"><img src="avatar.jpg.jpeg"><div class="question-overlay">${questions[step]}</div></div>`;
             } else {
                 let vNum = step - 1; 
                 media = `<video autoplay playsinline muted src="video${vNum}.MP4" onloadedmetadata="this.muted=false; this.play();"></video>`;
             }
-
-            document.getElementById('box').innerHTML = `
-                ${timerHtml}
-                ${media}<br><br>
-                <textarea id="ans" placeholder="Provide your answers" autofocus></textarea><br>
-                <button onclick="next()">Proceed</button>
-            `;
+            document.getElementById('box').innerHTML = `${timerHtml}${media}<br><br><textarea id="ans" placeholder="Provide your answers" autofocus></textarea><br><button onclick="next()">Proceed</button>`;
         }
     </script>
 </body>
