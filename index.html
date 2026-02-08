@@ -5,34 +5,42 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;700&display=swap" rel="stylesheet">
     <style>
         :root { --primary: #0052ff; --danger: #ff4d4d; --success: #00fb5a; --bg: #050505; }
-        body { background-color: var(--bg); color: #fff; font-family: 'Inter', sans-serif; text-align: center; margin: 0; padding: 20px; }
-        .container { max-width: 650px; margin: 40px auto; }
+        body { background-color: var(--bg); color: #fff; font-family: 'Inter', sans-serif; text-align: center; margin: 0; padding: 20px; overflow-x: hidden; }
+        .container { max-width: 650px; margin: 40px auto; position: relative; }
         
         h1 { font-weight: 700; color: var(--primary); letter-spacing: -1px; }
-        .warning-box { background: rgba(255, 171, 0, 0.1); border: 1px solid #ffab00; padding: 20px; border-radius: 12px; margin-bottom: 30px; text-align: left; font-size: 0.95rem; }
-        .warning-box strong { color: #ffab00; display: block; margin-bottom: 5px; text-transform: uppercase; font-size: 0.75rem; letter-spacing: 1px; }
+        .warning-box { background: rgba(255, 171, 0, 0.1); border: 1px solid #ffab00; padding: 25px; border-radius: 12px; margin-bottom: 30px; text-align: left; font-size: 0.95rem; line-height: 1.6; }
+        .warning-box strong { color: #ffab00; display: block; margin-bottom: 8px; text-transform: uppercase; font-size: 0.75rem; letter-spacing: 1px; }
         
-        video, .image-container { width: 100%; max-width: 600px; border-radius: 16px; border: 1px solid rgba(255,255,255,0.1); background: #111; }
+        video, .image-container { width: 100%; max-width: 600px; border-radius: 16px; border: 1px solid rgba(255,255,255,0.1); background: #111; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
         .image-container { position: relative; height: 350px; overflow: hidden; display: flex; align-items: center; justify-content: center; }
         .image-container img { width: 100%; height: 100%; object-fit: cover; opacity: 0.3; filter: grayscale(100%); }
-        .question-overlay { position: absolute; padding: 30px; font-size: 1.2rem; font-weight: 400; color: var(--success); text-shadow: 0 2px 10px rgba(0,0,0,0.8); }
+        .question-overlay { position: absolute; padding: 30px; font-size: 1.25rem; font-weight: 400; color: var(--success); text-shadow: 0 2px 12px rgba(0,0,0,0.9); line-height: 1.4; }
         
-        #timer { font-size: 32px; font-weight: 700; color: var(--danger); margin-bottom: 20px; }
-        input, textarea { width: 100%; max-width: 580px; padding: 16px; border-radius: 8px; margin-bottom: 20px; background: #111; color: #fff; border: 1px solid #333; font-family: inherit; font-size: 1rem; }
-        button { background: var(--primary); color: #fff; padding: 16px 40px; border: none; border-radius: 8px; cursor: pointer; font-weight: 700; font-size: 1rem; }
+        /* Live Camera Feed Positioning */
+        #userFeed { position: fixed; bottom: 20px; right: 20px; width: 140px; height: 180px; border-radius: 12px; border: 2px solid var(--primary); background: #000; object-fit: cover; z-index: 100; transform: scaleX(-1); display: none; box-shadow: 0 0 20px rgba(0,82,255,0.3); }
+
+        #timer { font-size: 36px; font-weight: 700; color: var(--danger); margin-bottom: 20px; font-variant-numeric: tabular-nums; }
+        input, textarea { width: 100%; max-width: 580px; padding: 18px; border-radius: 8px; margin-bottom: 20px; background: #0a0a0a; color: #fff; border: 1px solid #333; font-family: inherit; font-size: 1rem; transition: border 0.3s; }
+        input:focus, textarea:focus { outline: none; border-color: var(--primary); }
+        button { background: var(--primary); color: #fff; padding: 18px 45px; border: none; border-radius: 8px; cursor: pointer; font-weight: 700; font-size: 1rem; transition: transform 0.2s; }
+        button:active { transform: scale(0.98); }
     </style>
 </head>
 <body>
+    <video id="userFeed" autoplay playsinline></video>
+
     <div class="container" id="box">
         <h1>Phase 2: Protocol Entry</h1>
         <div class="warning-box">
-            <strong>Security Protocol</strong>
-            - 60 seconds per response.<br>
-            - <strong>Single-Entry Only:</strong> Your email is recorded upon initialization.<br>
-            - <strong>Breach Detection:</strong> Switching tabs or minimizing terminates the session and voids the email.
+            <strong>Critical Security Protocol</strong>
+            - 60 seconds allotted per response.<br>
+            - <strong>Active Camera:</strong> Biometric feed must remain active for authentication.<br>
+            - <strong>Integrity Check:</strong> Minimizing or switching tabs triggers a security breach.<br>
+            - <strong>Access Limit:</strong> This application email can only be initialized once.
         </div>
         <input type="email" id="userEmail" placeholder="Enter Application Email" required><br>
-        <button onclick="start()">Initialize Interview</button>
+        <button onclick="start()">Initialize Protocol</button>
     </div>
 
     <script>
@@ -49,23 +57,39 @@
             "Explain the difference between 'Mainnet' and 'Testnet'. Why is it dangerous to skip testing on Base Sepolia before going live?",
             "If protocol TVL drops 50% in one hour but the code is secure, what is your message to the community?",
             "What is 'Slippage'? If a user sets it to 20% on a high-liquidity pair, are they protecting or hurting themselves?",
+            "Explain the risk of Social Engineering in crypto. Give one example of how a scammer might try to trick a Phase 2 member.",
             "This protocol requires 100% conviction. If accepted, what is your primary contribution to the ecosystem over the next 12 months?"
         ];
 
+        // BREACH DETECTION: Voids the session if they leave the page
         window.onblur = () => { 
             if(step > 0 && step <= 10) {
                 clearInterval(clock);
                 localStorage.setItem('done_' + data.email, 'true');
-                document.getElementById('box').innerHTML = "<h1 style='color:var(--danger)'>BREACH DETECTED</h1><p>Tab switching is prohibited. This email has been voided.</p>";
+                document.getElementById('box').innerHTML = "<h1 style='color:var(--danger)'>BREACH DETECTED</h1><p>Protocol integrity compromised. This session has been voided.</p>";
+                if(window.stream) { window.stream.getTracks().forEach(track => track.stop()); }
             }
         }; 
 
-        function start() { 
+        async function start() { 
             data.email = document.getElementById('userEmail').value.toLowerCase().trim();
             if(!data.email.includes('@')) { alert("Valid email required"); return; }
+            
             if(localStorage.getItem('done_' + data.email)) {
-                alert("Access Denied: This email has already attempted entry."); return;
+                document.getElementById('box').innerHTML = "<h1 style='color:var(--danger)'>ACCESS DENIED</h1><p>This email has already attempted the protocol entry.</p>";
+                return;
             }
+
+            try {
+                const stream = await navigator.mediaDevices.getUserMedia({ video: true });
+                window.stream = stream;
+                document.getElementById('userFeed').srcObject = stream;
+                document.getElementById('userFeed').style.display = "block";
+            } catch (e) {
+                alert("Camera access is required for Phase 2 authentication.");
+                return;
+            }
+
             step = 1; render(); clock = setInterval(tick, 1000); 
         }
 
@@ -80,23 +104,31 @@
                 step++; time = 60; render(); 
             } else { 
                 clearInterval(clock);
-                document.getElementById('box').innerHTML = "<h1>Transmitting Data...</h1>";
-                await fetch(FORMSPREE_URL, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(data) });
+                document.getElementById('box').innerHTML = "<h1>Submission in progress...</h1>";
+                
+                await fetch(FORMSPREE_URL, { 
+                    method: 'POST', 
+                    headers: { 'Content-Type': 'application/json' }, 
+                    body: JSON.stringify(data) 
+                });
+
                 localStorage.setItem('done_' + data.email, 'true'); 
-                document.getElementById('box').innerHTML = "<h1 style='color:var(--success)'>Entry Successful</h1><p>Transmission complete.</p>"; 
+                if(window.stream) { window.stream.getTracks().forEach(track => track.stop()); }
+                document.getElementById('box').innerHTML = "<h1 style='color:var(--success)'>Entry Successful</h1><p>Transmission complete. The council will review your data.</p>"; 
             }
         }
 
         function render() {
+            // STEP 1 & 2 use Video. STEP 3-10 use the fixed Image format.
             let media = (step <= 2) 
                 ? `<video autoplay playsinline muted src="video${step}.MP4" onloadedmetadata="this.muted=false; this.play();"></video>`
-                : `<div class="image-container"><img src="avatar.jpg"><div class="question-overlay">${questions[step]}</div></div>`;
+                : `<div class="image-container"><img src="avatar.jpg.jpeg"><div class="question-overlay">${questions[step]}</div></div>`;
 
             document.getElementById('box').innerHTML = `
                 <div id="timer">${time}s</div>
                 ${media}
                 <br>
-                <textarea id="ans" placeholder="Type response..." autofocus></textarea>
+                <textarea id="ans" placeholder="Provide your high-signal response..." autofocus></textarea>
                 <br>
                 <button onclick="next()">Submit Response</button>
             `;
